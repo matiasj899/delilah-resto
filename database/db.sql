@@ -79,6 +79,31 @@ VALUES
     "https://images.rappi.com.ar/products/1479382-1598906722966.png?d=400x400&e=webp"
   );
 CREATE TABLE pedidos(
-  id INT(11) NOT NULL AUTO_INCREMENT ,
-  
-)
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    usuario_id INT (11) NOT NULL,
+    pago FLOAT NOT NULL,
+    estado enum(
+      "nuevo",
+      "confirmado",
+      "preparando",
+      "enviando",
+      "entregado"
+    ) NOT NULL,
+    hora DATETIME NOT NULL,
+    direccion VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (usuario_id) REFERENCES users(id)
+  );
+INSERT INTO pedidos (usuario_id,pago,estado,hora,direccion)VALUES (12,2000,"nuevo",'2020-11-30 17:47:41',"kanto");
+
+  CREATE TABLE productosPedidos(
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    pedido_id INT(11) NOT NULL,
+    producto_id INT(11) NOT NULL ,
+    cantidad INT(11) NOT NULL ,
+    PRIMARY KEY (id),
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
+    FOREIGN KEY (producto_id) REFERENCES products(id)
+
+  );
+INSERT INTO productosPedidos(pedido_id,producto_id,cantidad)VALUES (1,1,2);

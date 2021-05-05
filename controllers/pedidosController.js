@@ -105,13 +105,16 @@ const actualizarPedido = async (req, res) => {
   }
 };
 const eliminarPedido = async (req, res) => {
-  const pedidoaEliminar = await Pedido.findByPk(req.params.id);
-  if (pedidoaEliminar) {
+  const pedidoDetalleEliminar = await Productopedido.findOne({
+    where: { pedidoId: req.params.id },
+  });
+  const pedidoEliminar = await Pedido.findByPk(req.params.id);
+  if (pedidoDetalleEliminar && pedidoEliminar) {
     try {
-      await Pedido.destroy({
-        where: { id: req.params.id },
-        include: [{ model: Productopedido }],
+      await Productopedido.destroy({
+        where: { pedidoId: req.params.id },
       });
+      await Pedido.destroy({ where: { id: req.params.id } });
       res.status(200).json({
         status: 200,
         mensaje: "Pedido eliminado correctamente.",

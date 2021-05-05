@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const express = require("express");
 const Sequelize = require("sequelize");
-const jwt=require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 const db = require("./config/database");
 dotenv.config({ path: "./config/config.env" });

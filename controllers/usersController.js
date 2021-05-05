@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
       phone,
       adress,
       password,
-      admin
+      admin,
     } = req.body;
 
     const hashedPassword = await bcrypt.hash(
@@ -30,8 +30,7 @@ const createUser = async (req, res) => {
             phone,
             adress,
             password: hash,
-      admin
-
+            admin,
           });
 
           res.status(200).json({
@@ -57,10 +56,10 @@ const createUser = async (req, res) => {
 //LOGIN USUARIO
 
 const loginUser = async (req, res) => {
-  console.log("en el login..")
+  console.log("en el login..");
   const { username, password } = req.body;
   const users = await User.findOne({
-    where: { username: username }
+    where: { username: username },
   });
   if (users == null) {
     return res.status(400).json({

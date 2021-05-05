@@ -21,7 +21,13 @@ const pedidosIsAdmin = async (req, res, next) => {
       } else {
         const pedidosUsuario = await Pedido.findAll({
           where: { usuarioId: decodedUser.id },
-          include: [{ model: Productopedido, as: "productoPedido" ,include:{model:Producto,as:"producto"}}],
+          include: [
+            {
+              model: Productopedido,
+              as: "productoPedido",
+              include: { model: Producto, as: "producto" },
+            },
+          ],
         });
         /*
         const pedidoUsuario = await Pedido.findByPk({

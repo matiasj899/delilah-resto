@@ -1,5 +1,5 @@
-const { Pedido} = require("../models/associations");
-const Productopedido=require("../models/ProductosPedidos")
+const { Pedido } = require("../models/associations");
+const Productopedido = require("../models/ProductosPedidos");
 const crear = async (userID, reqBody) => {
   const hora = new Date();
   let pago = [];
@@ -24,19 +24,18 @@ const crear = async (userID, reqBody) => {
 
 const detalle = async (reqBody, pedido) => {
   const { productos } = await reqBody;
-  
-  for (const producto of productos) {
-      const pedidoId=pedido.id
-      const productoId= producto.producto_id;
-      const productoCantidad=producto.cantidad;
 
-      const pedidoFinal=await Productopedido.create({
-          pedidoId,
-          productoId,
-          cantidad:productoCantidad
-      })
-      
+  for (const producto of productos) {
+    const pedidoId = pedido.id;
+    const productoId = producto.producto_id;
+    const productoCantidad = producto.cantidad;
+
+    const pedidoFinal = await Productopedido.create({
+      pedidoId,
+      productoId,
+      cantidad: productoCantidad,
+    });
   }
-  return "detalle creado."
+  return "detalle creado.";
 };
 module.exports = { crear, detalle };

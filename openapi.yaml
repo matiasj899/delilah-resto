@@ -1,0 +1,107 @@
+openapi: 3.0.0
+info:
+  title: Delilah Resto
+  description: Sistema de pedidos online para restaurante.
+  version: 1.0.0
+servers:
+- url: http://localhost:5000/Delilah-Resto
+paths:
+  /User/:
+    get:
+      tags:
+      - User
+      summary: Si es admin devuelve todos los usuarios, caso contrario,devuelve informacion del usuario que realizo la peticion.
+      responses:
+        "200":
+          description: JSON user Object
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Error
+  /User/signup:
+    post:
+      tags:
+      - User
+      summary: Crea un nuevo usuario.
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/User'
+              - required: true
+                type: object
+                properties:
+                  username:
+                    type: "string"
+                  name:
+                    type: "string"
+                  lastname:
+                    type: "string"
+                  email:
+                    type: "string"
+                  phone: 
+                    type: "string"
+                  adress: 
+                    type: "string"
+                  password:
+                    type: "string"
+        required: true
+      responses:
+        "200":
+          description: Usuario creado exitosamente.
+          content:
+            aplication/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Error      
+      security: []
+  /User/login:
+    post:
+      tags:
+      - User
+      summary: Ingreso al sistema , devuelve token del usuario  si es exitoso.
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/User'
+              - required: true
+                type: object
+                properties:
+                  username:
+                    type: "string"
+                  password:
+                    type: "string"
+        required: true
+      responses:
+        "200":
+          description: Usuario logeado.
+          content:
+            aplication/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "number"
+                  id:
+                    type: "string"
+                  username:
+                    type: "string"
+                  name:
+                    type: "string"
+                  email:
+                    type: "string"
+                  token: 
+                    type: "string"
+                  mensaje:
+                    type: "string"
+        "400":
+          description: Usuario o contraseña incorrecta.      
+      security: []
+  /Productos/{id}:
+    get:   

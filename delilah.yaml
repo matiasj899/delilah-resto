@@ -1,0 +1,518 @@
+openapi: 3.0.0
+info:
+  title: Delilah Resto
+  description: Sistema de pedidos online para restaurante.
+  version: 1.0.0
+servers:
+- url: http://localhost:5000/Delilah-Resto
+components:
+  securitySchemes:
+    bearerAuth:         
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /User/:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - User
+      summary: Si es admin devuelve todos los usuarios, caso contrario,devuelve informacion del usuario que realizo la peticion.
+      responses:
+        "200":
+          description: Devuelve informacion usuarios.
+          content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                      info:
+                        type: "object"
+                        properties:
+                          id:
+                            type: "number"
+                          username:
+                            type: "string"
+                          name: 
+                            type: "string"
+                          lastname:
+                            type: "string"
+                          email:
+                            type: "string"
+                          phone:
+                            type: "string"
+                          adress: 
+                            type: "string"
+                            
+        "400":
+          description: Error
+  /User/signup:
+    post:
+      tags:
+      - User
+      summary: Crea un nuevo usuario.
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+                type: "object"
+                properties:
+                  username:
+                    type: "string"
+                  name:
+                    type: "string"
+                  lastname:
+                    type: "string"
+                  email:
+                    type: "string"
+                  phone: 
+                    type: "string"
+                  adress: 
+                    type: "string"
+                  password:
+                    type: "string"
+        required: true
+      responses:
+        "200":
+          description: Usuario creado exitosamente.
+          content:
+            aplication/json:
+              schema:
+                type: "object"
+                properties:
+                  mensaje:
+                    type: "string"
+        "400":
+          description: Error      
+      security: []
+  /User/login:
+    post:
+      tags:
+      - User
+      summary: Ingreso al sistema , devuelve token del usuario  si es exitoso.
+      requestBody:
+        content:
+          aplication/json:
+            schema:
+                type: object
+                properties:
+                  username:
+                    type: "string"
+                  password:
+                    type: "string"
+        required: true
+      responses:
+        "200":
+          description: Usuario logeado.
+          content:
+            aplication/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "number"
+                  id:
+                    type: "string"
+                  username:
+                    type: "string"
+                  name:
+                    type: "string"
+                  email:
+                    type: "string"
+                  token: 
+                    type: "string"
+                  mensaje:
+                    type: "string"
+        "400":
+          description: Usuario o contraseña incorrecta.      
+      security: []
+  /Productos/:
+    get:
+      tags:
+        - Productos
+      summary: Devuelve todos los productos.
+      responses:
+        "200":
+          description: Regresa todos los productos.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  productos:
+                    type: "array"
+                    items: 
+                      type: "object"
+                      properties: 
+                        id:
+                          type: "number"
+                        name:
+                          type: "string"
+                        price:
+                          type: "number"
+                        img: 
+                          type: "string"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  mensaje:
+                    type: "string"
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+      - Productos
+      summary: Si es admin permite crear un producto.
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name: 
+                  type: "string"
+                price: 
+                  type: "number"
+                img:
+                  type: "string"
+      responses:
+        "200":
+          description: Producto agregado satisfactoriamente.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  mensaje: 
+                    type: "string"
+                  producto:
+                    type: "object"
+        "400":
+          description: No se ha podido agregar el producto.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  mensaje:
+                    type: "string"
+  /Productos/{id}:
+    get:
+      tags: 
+        - Productos
+      summary: Devuelve productos por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: Producto por id
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  productos:
+                    type: "object"
+                    properties:
+                        id:
+                          type: "number"
+                        name:
+                          type: "string"
+                        price:
+                          type: "number"
+                        img: 
+                          type: "string"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  mensaje:
+                    type: "string"                  
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Productos
+      summary: Si es admin permite actualizar productos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: "string"
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name: 
+                  type: "string"
+                price: 
+                  type: "number"
+                img:
+                  type: "string"
+      responses:
+        "200":
+          description: Producto actualizado.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  mensaje:
+                    type: "string" 
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  mensaje:
+                    type: "string"
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Productos
+      summary: Si es admin permite eliminar productos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: Producto eliminado.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  mensaje:
+                    type: "string"
+        "400":
+          description: No se Pudo eliminar el producto.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  mensaje:
+                    type: "string"
+  /Pedidos/:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Pedidos
+      summary: Si es admin devuelve todos los pedidos, sino solamente los pedido del usuario.
+      responses:
+        "200":
+          description: Devolviendo todos los pedidos
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  pedidosUsuario:
+                    type: "array"
+                    items: 
+                      type: "object"
+                      properties:
+                        id: 
+                         type: "number"
+                        usuarioId:
+                          type: "number"
+                        pago: 
+                          type: "string"
+                        hora:
+                          type: "string"
+                        direccion:
+                          type: "string"
+                        productoPedido:
+                          type: "array"
+                          items:
+                            type: "object"
+                            properties:
+                              id:
+                                type: "number"
+                              pedidoId:
+                                type: "number"
+                              ProductoId:
+                                type: "number"
+                              cantidad:
+                                type: "number"
+                              Producto: 
+                                type: "array"
+                                items:
+                                  type: "object"
+                                  properties:
+                                    id:
+                                     type: "number"
+                                    name:
+                                      type: "string"
+                                    price: 
+                                      type: "number"
+                                    img:
+                                      type: "string"
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  mensaje:
+                    type: "string"                          
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+      - Pedidos
+      summary: Crea un pedido
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                productos:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      producto_id:
+                        type: "number"
+                      cantidad:
+                        type: "number"
+                      precio:
+                        type: "number"
+                direccion:
+                    type: "string"
+      responses:
+        "200":
+          description: Devuelve pedido y detalle del pedido.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  pedido:
+                    type: "object"
+                    properties:
+                      usuarioId:
+                        type: "number"
+                      pago:
+                        type: "number"
+                      hora: 
+                       type: "string"
+                      direccion:
+                       type: "string"
+                  detallePedido:
+                    type: "object"
+                    properties:
+                      pedidoId:
+                        type: "number"
+                      productoId:
+                        type: "number"
+                      cantidad:
+                        type: "number"
+        "400":
+          description: No se ha podido procesar el pedido.
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  error: 
+                    type: "string"
+  /Pedidos/{id}:                 
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Pedidos
+      summary: Si es admin permite actualizar pedidos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: "string"
+      requestBody: 
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                estado:
+                  type: "string"
+      responses:
+          "200":
+            description: Pedido actualizado correctamente.
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                      mensaje:
+                        type: "string"
+          "400":
+            description: Pedido inexistente.
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                      mensaje:
+                        type: "string"
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Pedidos
+      summary: Si es admin permite eliminar pedidos.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: "string"
+      responses:
+          "200":
+            description: Pedido eliminado correctamente.
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                      mensaje:
+                        type: "string"
+          "400":
+            description: Pedido inexistente.
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                      mensaje:
+                        type: "string"
+            
+          
+                
+                                                 

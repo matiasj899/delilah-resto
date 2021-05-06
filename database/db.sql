@@ -27,14 +27,24 @@ INSERT INTO
   )
 VALUES
   (
+    "admin123",
     "admin",
-    "Matias",
-    "Juarez",
-    "matiasjuarez899@gmail.com",
-    12345,
+    "admin",
+    "admin@gmail.com",
+    012345,
     "callefalsa123",
     1,
-    "admin123"
+    "$2b$10$vto2Mwflvoca8YpH142WoOt0LAklAGHO1.lJqONnyBwiTFl.rYSyS"
+  ),
+  (
+    "queen_freddie",
+    "freddy",
+    "mercury",
+    "freddymercury@gmail.com",
+    77711901098,
+    "london",
+    0,
+    "$2b$10$pFtqFXb7Tr0LNbHQxX2WxuEN0e4dqTc4L8oxck1pOZvwNsZ2P5ulC"
   );
 CREATE TABLE products(
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -94,16 +104,13 @@ CREATE TABLE pedidos(
     PRIMARY KEY (id),
     FOREIGN KEY (usuario_id) REFERENCES users(id)
   );
-INSERT INTO pedidos (usuario_id,pago,estado,hora,direccion)VALUES (12,2000,"nuevo",'2020-11-30 17:47:41',"kanto");
 
-  CREATE TABLE productosPedidos(
+CREATE TABLE productosPedidos(
     id INT(11) NOT NULL AUTO_INCREMENT,
     pedido_id INT(11) NOT NULL,
-    producto_id INT(11) NOT NULL ,
-    cantidad INT(11) NOT NULL ,
+    producto_id INT(11) NOT NULL,
+    cantidad INT(11) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
     FOREIGN KEY (producto_id) REFERENCES products(id)
-
   );
-INSERT INTO productosPedidos(pedido_id,producto_id,cantidad)VALUES (1,1,2);
